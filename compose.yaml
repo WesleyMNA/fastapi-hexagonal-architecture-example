@@ -4,6 +4,7 @@ volumes:
 services:
   postgres:
     image: 'postgres:latest'
+    restart: always
     environment:
       - 'POSTGRES_DB=hexagonal'
       - 'POSTGRES_PASSWORD=root'

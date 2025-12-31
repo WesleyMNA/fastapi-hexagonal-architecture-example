@@ -1,11 +1,11 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
 
-from src import models
 from src.adapters.inbound.dtos.user import UserResponse, UserCreate
-from src.database import SessionLocal
+from src.config.repositories import create_user_repository
+from src.domain.models.user import User
+from src.ports.outbound.repositories.user import UserRepository
 
 router = APIRouter(
     prefix='/users',
@@ -13,31 +13,20 @@ router = APIRouter(
 )
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
 @router.post('', response_model=UserResponse)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = models.User(name=user.name, email=user.email)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+def create_user(req: UserCreate, repository: UserRepository = Depends(create_user_repository)):
+    user = User(None, req.name, req.email)
+    return repository.create(user)
 
 
 @router.get('', response_model=List[UserResponse])
-def get_users(db: Session = Depends(get_db)):
-    return db.query(models.User).all()
+def get_users(repository: UserRepository = Depends(create_user_repository)):
+    return repository.find_all()
 
 
 @router.get('{user_id}', response_model=UserResponse)
-def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+def get_user(user_id: int, repository: UserRepository = Depends(create_user_repository)):
+    user = repository.find_by_id(user_id)
     if not user:
         raise HTTPException(status_code=404, detail='User not found')
     return user
