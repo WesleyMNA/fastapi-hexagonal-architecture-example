@@ -3,7 +3,8 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from src import schemas, models
+from src import models
+from src.adapters.inbound.dtos.users import UserResponse, UserCreate
 from src.database import SessionLocal
 
 router = APIRouter(
@@ -20,8 +21,8 @@ def get_db():
         db.close()
 
 
-@router.post('', response_model=schemas.UserResponse)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@router.post('', response_model=UserResponse)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = models.User(name=user.name, email=user.email)
     db.add(db_user)
     db.commit()
@@ -29,12 +30,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get('', response_model=List[schemas.UserResponse])
+@router.get('', response_model=List[UserResponse])
 def get_users(db: Session = Depends(get_db)):
     return db.query(models.User).all()
 
 
-@router.get('{user_id}', response_model=schemas.UserResponse)
+@router.get('{user_id}', response_model=UserResponse)
 def get_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     if not user:
