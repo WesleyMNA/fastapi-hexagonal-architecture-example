@@ -8,7 +8,7 @@ from src.ports.outbound.repositories.user import UserRepository
 
 
 def to_user(u: UserOrm | type[UserOrm]) -> User:
-    return User(u.id, u.name, u.email)
+    return User(u.name, u.email, u.id)
 
 
 class UserRepositoryImpl(UserRepository):
