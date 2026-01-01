@@ -1,7 +1,9 @@
 from typing import List
 
+from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from src.adapters.outbound.config import create_db
 from src.adapters.outbound.orms.user import UserOrm
 from src.domain.models.user import User
 from src.ports.outbound.repositories.user import UserRepository
@@ -13,7 +15,7 @@ def to_user(u: UserOrm | type[UserOrm]) -> User:
 
 class UserRepositoryImpl(UserRepository):
 
-    def __init__(self, db: Session):
+    def __init__(self, db: Session = Depends(create_db)):
         self.db = db
 
     def find_all(self) -> List[User]:
@@ -22,9 +24,7 @@ class UserRepositoryImpl(UserRepository):
 
     def find_by_id(self, user_id: int) -> User | None:
         result = self.db.query(UserOrm).filter(UserOrm.id == user_id).first()
-        if result is not None:
-            return to_user(result)
-        return None
+        return to_user(result) if result is not None else None
 
     def create(self, new_user: User) -> User:
         result = UserOrm(name=new_user.name, email=new_user.email)
