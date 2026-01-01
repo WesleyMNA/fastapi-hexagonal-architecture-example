@@ -2,7 +2,8 @@ from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from src.adapters.inbound.dtos.user import UserResponse, UserCreate
+import src.adapters.inbound.mappers.user as mapper
+from src.adapters.inbound.dtos.user import UserResponse
 from src.config.repositories import create_user_repository
 from src.domain.models.user import User
 from src.ports.outbound.repositories.user import UserRepository
@@ -11,12 +12,6 @@ router = APIRouter(
     prefix='/users',
     tags=['Users']
 )
-
-
-@router.post('', response_model=UserResponse)
-def create_user(req: UserCreate, repository: UserRepository = Depends(create_user_repository)):
-    user = User(None, req.name, req.email)
-    return repository.create(user)
 
 
 @router.get('', response_model=List[UserResponse])
@@ -30,3 +25,11 @@ def get_user(user_id: int, repository: UserRepository = Depends(create_user_repo
     if not user:
         raise HTTPException(status_code=404, detail='User not found')
     return user
+
+
+@router.post('', response_model=UserResponse)
+def create_user(
+        user: User = Depends(mapper.from_create_req),
+        repository: UserRepository = Depends(create_user_repository)
+):
+    return repository.create(user)
