@@ -1,7 +1,7 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.adapters.outbound.config.db import Base
+from src.adapters.outbound.config import Base
 
 
 class UserOrm(Base):

@@ -4,8 +4,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from src.adapters.outbound.config import create_db
-from src.adapters.outbound.mappers.user import UserOrmMapper
-from src.adapters.outbound.orms.user import UserOrm
+from src.adapters.outbound.mappers import UserOrmMapper
+from src.adapters.outbound.orms import UserOrm
 from src.domain.models.user import User
 from src.ports.outbound.repositories.user import UserRepository
 

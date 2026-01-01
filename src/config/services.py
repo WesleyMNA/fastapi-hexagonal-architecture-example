@@ -1,6 +1,6 @@
 from fastapi.params import Depends
 
-from src.adapters.outbound.repository.user import UserRepositoryImpl
+from src.adapters.outbound.repository import UserRepositoryImpl
 from src.application.services.user import UserServiceImpl
 from src.ports.inbound.services.user import UserService
 from src.ports.outbound.repositories.user import UserRepository

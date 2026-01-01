@@ -1,6 +1,6 @@
 from dataclasses import asdict
 
-from src.adapters.outbound.orms.user import UserOrm
+from src.adapters.outbound.orms import UserOrm
 from src.domain.models.user import User
 
 
