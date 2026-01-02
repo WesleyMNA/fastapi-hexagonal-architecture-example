@@ -6,8 +6,12 @@ class UserCreate(BaseModel):
     email: str
 
 
-class UserResponse(UserCreate):
-    id: int
+class UserPatch(BaseModel):
+    name: str | None = None
+    email: str | None = None
 
-    class Config:
-        from_attributes = True
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str

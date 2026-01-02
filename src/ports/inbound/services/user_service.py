@@ -13,3 +13,12 @@ class UserService(Protocol):
 
     async def create(self, user: User) -> User:
         pass
+
+    async def update(self, user_id: int, user: User) -> None:
+        pass
+
+    async def patch(self, user_id: int, user: User) -> None:
+        pass
+
+    async def delete(self, user_id: int) -> None:
+        pass
