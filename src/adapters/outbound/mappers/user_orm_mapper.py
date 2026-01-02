@@ -1,7 +1,7 @@
 from dataclasses import asdict
 
 from src.adapters.outbound.orms import UserOrm
-from src.domain.models.user import User
+from src.domain import User
 
 
 class UserOrmMapper:

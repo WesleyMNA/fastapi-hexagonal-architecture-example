@@ -1,5 +1,5 @@
-from src.adapters.inbound.dtos.user_dtos import UserCreate
-from src.domain.models.user import User
+from src.adapters.inbound.dtos import UserCreate
+from src.domain import User
 
 
 def from_create_req(r: UserCreate) -> User:

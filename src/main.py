@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.adapters.inbound.controllers import main_router
+from src.adapters.inbound import main_router
 
 app = FastAPI()
 app.include_router(main_router)

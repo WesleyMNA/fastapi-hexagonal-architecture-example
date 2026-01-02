@@ -1,6 +1,6 @@
 from typing import List, Protocol
 
-from src.domain.models.user import User
+from src.domain import User
 
 
 class UserService(Protocol):
