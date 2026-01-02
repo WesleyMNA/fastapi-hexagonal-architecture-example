@@ -2,11 +2,10 @@ from typing import List
 
 from src.application.exceptions.rest import NotFound
 from src.domain.models.user import User
-from src.ports.inbound.services.user import UserService
 from src.ports.outbound.repositories.user import UserRepository
 
 
-class UserServiceImpl(UserService):
+class UserServiceImpl:
 
     def __init__(self, repository: UserRepository):
         self.repository = repository

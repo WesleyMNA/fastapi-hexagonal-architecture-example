@@ -7,10 +7,9 @@ from src.adapters.outbound.config import create_db
 from src.adapters.outbound.mappers import UserOrmMapper
 from src.adapters.outbound.orms import UserOrm
 from src.domain.models.user import User
-from src.ports.outbound.repositories.user import UserRepository
 
 
-class UserRepositoryImpl(UserRepository):
+class UserSqlAlchemyRepository:
 
     def __init__(self,
                  db: Session = Depends(create_db),

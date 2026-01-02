@@ -1,1 +1,1 @@
-from .user import UserRepositoryImpl
+from .user import UserSqlAlchemyRepository
