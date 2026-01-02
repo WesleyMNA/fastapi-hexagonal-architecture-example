@@ -29,7 +29,12 @@ class UserServiceImpl:
         await self.repository.update(user)
 
     async def patch(self, user_id: int, updated_user: User) -> None:
-        pass
+        user = await self.find_by_id(user_id)
+        if updated_user.name is not None:
+            user.name = updated_user.name
+        if updated_user.email is not None:
+            user.email = updated_user.email
+        await self.repository.update(user)
 
     async def delete(self, user_id: int) -> None:
         pass
