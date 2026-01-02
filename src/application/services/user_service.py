@@ -38,4 +38,4 @@ class UserServiceImpl:
 
     async def delete(self, user_id: int) -> None:
         await self.find_by_id(user_id)
-        await self.repository.delete(user_id)
+        await self.repository.delete_by_id(user_id)

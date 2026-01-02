@@ -17,5 +17,5 @@ class UserRepository(Protocol):
     async def update(self, updated_user: User) -> None:
         pass
 
-    async def delete(self, user_id: int) -> None:
+    async def delete_by_id(self, user_id: int) -> None:
         pass

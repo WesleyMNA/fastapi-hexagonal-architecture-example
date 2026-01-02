@@ -45,7 +45,7 @@ class UserSqlAlchemyRepository:
         await self.db.execute(stmt)
         await self.db.commit()
 
-    async def delete(self, user_id: int) -> None:
+    async def delete_by_id(self, user_id: int) -> None:
         stmt = (delete(UserOrm).where(UserOrm.id == user_id))
         await self.db.execute(stmt)
         await self.db.commit()
