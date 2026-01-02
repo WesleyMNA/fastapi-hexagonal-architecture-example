@@ -6,8 +6,12 @@ from src.domain.models.user import User
 
 class UserOrmMapper:
     @staticmethod
-    def to_domain(u: UserOrm | type[UserOrm]) -> User:
-        return User(u.name, u.email, u.id)
+    def to_domain(u: UserOrm) -> User:
+        return User(
+            id=u.id,
+            name=u.name,
+            email=u.email,
+        )
 
     @staticmethod
     def to_orm(u: User) -> UserOrm:

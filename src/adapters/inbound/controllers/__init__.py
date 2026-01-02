@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from . import user
+from . import user_router
 
 main_router = APIRouter()
-main_router.include_router(user.router)
+main_router.include_router(user_router.router)

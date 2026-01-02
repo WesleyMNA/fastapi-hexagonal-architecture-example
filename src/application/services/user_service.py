@@ -2,7 +2,7 @@ from typing import List
 
 from src.application.exceptions.rest import NotFound
 from src.domain.models.user import User
-from src.ports.outbound.repositories.user import UserRepository
+from src.ports.outbound.repositories.user_repository import UserRepository
 
 
 class UserServiceImpl:

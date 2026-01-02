@@ -2,11 +2,11 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-import src.adapters.inbound.mappers.user as mapper
-from src.adapters.inbound.dtos.user import UserResponse
+import src.adapters.inbound.mappers.user_dto_mapper as mapper
+from src.adapters.inbound.dtos.user_dtos import UserResponse
 from src.config import create_user_service
 from src.domain.models.user import User
-from src.ports.inbound.services.user import UserService
+from src.ports.inbound.services.user_service import UserService
 
 router = APIRouter(
     prefix='/users',

@@ -1,4 +1,4 @@
-from src.adapters.inbound.dtos.user import UserCreate
+from src.adapters.inbound.dtos.user_dtos import UserCreate
 from src.domain.models.user import User
 
 
