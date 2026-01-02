@@ -15,17 +15,17 @@ router = APIRouter(
 
 
 @router.get('', response_model=List[UserResponse])
-async def get_users(service: UserService = Depends(create_user_service)):
+async def find_all(service: UserService = Depends(create_user_service)):
     return await service.find_all()
 
 
 @router.get('/{user_id}', response_model=UserResponse)
-async def get_user(user_id: int, service: UserService = Depends(create_user_service)):
+async def find_by_id(user_id: int, service: UserService = Depends(create_user_service)):
     return await service.find_by_id(user_id)
 
 
 @router.post('', response_model=UserResponse)
-async def create_user(
+async def create(
         user: User = Depends(mapper.from_create_req),
         service: UserService = Depends(create_user_service)
 ):
