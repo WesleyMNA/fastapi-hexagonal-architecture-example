@@ -2,7 +2,7 @@ from dataclasses import asdict
 from typing import List
 
 from fastapi import Depends
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -45,3 +45,7 @@ class UserSqlAlchemyRepository:
         await self.db.execute(stmt)
         await self.db.commit()
 
+    async def delete(self, user_id: int) -> None:
+        stmt = (delete(UserOrm).where(UserOrm.id == user_id))
+        await self.db.execute(stmt)
+        await self.db.commit()
