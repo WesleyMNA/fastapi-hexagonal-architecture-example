@@ -1,2 +1,2 @@
 from .error_handler import handle_rest_exception
-from .services import create_user_service
+from .user_config import create_user_service

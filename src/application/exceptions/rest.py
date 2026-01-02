@@ -25,5 +25,15 @@ class RestException(Exception):
 
 class NotFound(RestException):
 
-    def __init__(self, detail: str = 'Not Found', title: str = 'Not Found', *args):
+    _DEFAULT_TITLE = 'Not Found'
+
+    def __init__(self, detail: str = _DEFAULT_TITLE, title: str = _DEFAULT_TITLE, *args):
         super().__init__(title, 404, detail, *args)
+
+
+class Conflict(RestException):
+
+    _DEFAULT_TITLE = 'Conflict'
+
+    def __init__(self, detail: str = _DEFAULT_TITLE, title: str = _DEFAULT_TITLE, *args):
+        super().__init__(title, 409, detail, *args)

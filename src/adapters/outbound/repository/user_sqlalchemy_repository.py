@@ -2,7 +2,7 @@ from dataclasses import asdict
 from typing import List
 
 from fastapi import Depends
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, exists
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -49,3 +49,18 @@ class UserSqlAlchemyRepository:
         stmt = (delete(UserOrm).where(UserOrm.id == user_id))
         await self.db.execute(stmt)
         await self.db.commit()
+
+    async def exists_by_id(self, user_id: int) -> bool:
+        stmt = select(exists(UserOrm).where(UserOrm.id == user_id))
+        query = await self.db.execute(stmt)
+        return query.scalar()
+
+    async def exists_by_email(self, email: str) -> bool:
+        stmt = select(exists(UserOrm).where(UserOrm.email == email))
+        query = await self.db.execute(stmt)
+        return query.scalar()
+
+    async def exists_by_id_not_and_email(self, user_id: int, email: str) -> bool:
+        stmt = select(exists(UserOrm).where(UserOrm.id != user_id, UserOrm.email == email))
+        query = await self.db.execute(stmt)
+        return query.scalar()
