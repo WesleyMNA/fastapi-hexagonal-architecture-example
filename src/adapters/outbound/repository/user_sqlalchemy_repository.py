@@ -1,7 +1,9 @@
+from dataclasses import asdict
 from typing import List
 
 from fastapi import Depends
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.adapters.outbound.config import create_db
@@ -28,9 +30,18 @@ class UserSqlAlchemyRepository:
         result = query.scalar()
         return await self.mapper.to_domain(result) if result is not None else None
 
-    async def create(self, new_user: User) -> User:
+    async def save(self, new_user: User) -> User:
         result = await self.mapper.to_orm(new_user)
         self.db.add(result)
         await self.db.commit()
         await self.db.refresh(result)
         return await self.mapper.to_domain(result)
+
+    async def update(self, updated_user: User) -> None:
+        user_as_dict = asdict(updated_user)
+        stmt = (insert(UserOrm)
+                .values(**user_as_dict)
+                .on_conflict_do_update(index_elements=[UserOrm.id], set_=user_as_dict))
+        await self.db.execute(stmt)
+        await self.db.commit()
+

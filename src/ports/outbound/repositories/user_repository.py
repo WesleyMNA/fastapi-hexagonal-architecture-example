@@ -11,5 +11,8 @@ class UserRepository(Protocol):
     async def find_by_id(self, user_id: int) -> User | None:
         pass
 
-    async def create(self, user: User) -> User:
+    async def save(self, new_user: User) -> User:
+        pass
+
+    async def update(self, updated_user: User) -> None:
         pass

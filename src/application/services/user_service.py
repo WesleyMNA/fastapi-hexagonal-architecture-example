@@ -20,4 +20,16 @@ class UserServiceImpl:
         return result
 
     async def create(self, user: User) -> User:
-        return await self.repository.create(user)
+        return await self.repository.save(user)
+
+    async def update(self, user_id: int, updated_user: User) -> None:
+        user = await self.find_by_id(user_id)
+        user.name = updated_user.name
+        user.email = updated_user.email
+        await self.repository.update(user)
+
+    async def patch(self, user_id: int, updated_user: User) -> None:
+        pass
+
+    async def delete(self, user_id: int) -> None:
+        pass
