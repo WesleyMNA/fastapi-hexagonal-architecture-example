@@ -25,7 +25,7 @@ async def find_by_id(user_id: int, service: UserService = Depends(create_user_se
     return await service.find_by_id(user_id)
 
 
-@router.post('', response_model=UserResponse)
+@router.post('', status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 async def create(
         user: User = Depends(mapper.from_create_req),
         service: UserService = Depends(create_user_service)
