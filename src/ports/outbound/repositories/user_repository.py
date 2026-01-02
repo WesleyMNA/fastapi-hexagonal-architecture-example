@@ -5,11 +5,11 @@ from src.domain import User
 
 class UserRepository(Protocol):
 
-    def find_all(self) -> List[User]:
+    async def find_all(self) -> List[User]:
         pass
 
-    def find_by_id(self, user_id: int) -> User | None:
+    async def find_by_id(self, user_id: int) -> User | None:
         pass
 
-    def create(self, user: User) -> User:
+    async def create(self, user: User) -> User:
         pass

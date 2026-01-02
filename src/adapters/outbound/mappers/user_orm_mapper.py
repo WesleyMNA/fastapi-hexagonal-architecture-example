@@ -6,7 +6,7 @@ from src.domain import User
 
 class UserOrmMapper:
     @staticmethod
-    def to_domain(u: UserOrm) -> User:
+    async def to_domain(u: UserOrm) -> User:
         return User(
             id=u.id,
             name=u.name,
@@ -14,5 +14,5 @@ class UserOrmMapper:
         )
 
     @staticmethod
-    def to_orm(u: User) -> UserOrm:
+    async def to_orm(u: User) -> UserOrm:
         return UserOrm(**asdict(u))

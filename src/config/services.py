@@ -6,5 +6,5 @@ from src.ports.inbound import UserService
 from src.ports.outbound import UserRepository
 
 
-def create_user_service(r: UserRepository = Depends(UserSqlAlchemyRepository)) -> UserService:
+async def create_user_service(r: UserRepository = Depends(UserSqlAlchemyRepository)) -> UserService:
     return UserServiceImpl(r)

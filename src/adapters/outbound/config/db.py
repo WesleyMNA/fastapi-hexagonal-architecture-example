@@ -1,16 +1,30 @@
-from typing import Generator
+from typing import AsyncGenerator
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base, Session
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker, AsyncSession,
+)
+from sqlalchemy.orm import DeclarativeBase
 
-DATABASE_URL = "postgresql://postgres:root@localhost:5432/hexagonal"
+DATABASE_URL = "postgresql+asyncpg://postgres:root@localhost:5432/hexagonal"
 
-engine = create_engine(DATABASE_URL)
-_SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-Base = declarative_base()
+engine = create_async_engine(DATABASE_URL)
+_SessionLocal = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-def create_db() -> Generator[Session]:
-    with _SessionLocal() as db:
+class Base(DeclarativeBase):
+    pass
+
+
+async def create_db() -> AsyncGenerator[AsyncSession]:
+    async with _SessionLocal() as db:
         yield db
+
+
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
+async def db_dispose():
+    await engine.dispose()
