@@ -1,1 +1,1 @@
-from .user_service import UserServiceProtocol
+from .user_service_protocol import UserServiceProtocol

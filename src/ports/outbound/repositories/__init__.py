@@ -1,1 +1,1 @@
-from .user_repository import UserRepositoryProtocol
+from .user_repository_protocol import UserRepositoryProtocol

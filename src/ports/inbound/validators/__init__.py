@@ -1,1 +1,1 @@
-from .user_validator import UserValidatorProtocol
+from .user_validator_protocol import UserValidatorProtocol
