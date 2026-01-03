@@ -1,9 +1,9 @@
-from src.ports.outbound import UserRepository
+from src.ports.outbound import UserRepositoryProtocol
 
 
-class UserValidatorImpl:
+class UserValidator:
 
-    def __init__(self, repository: UserRepository):
+    def __init__(self, repository: UserRepositoryProtocol):
         self.repository = repository
 
     async def exists_by_id(self, user_id: int) -> bool:

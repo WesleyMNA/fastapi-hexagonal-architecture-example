@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from src.adapters.inbound.dtos import UserCreate, UserPatch
-from src.config import create_user_service
+from src.adapters.inbound.dtos import UserRequest, UserPatchRequest
+from src.config.user_dependency_config import get_user_service
 from src.domain import User
 from src.main import app
 
@@ -12,13 +12,14 @@ _REQ_EXAMPLE = {
     'email': 'john@example.com',
 }
 
+
 @pytest.mark.anyio
 class TestUserRouter:
 
     @pytest.fixture(autouse=True)
     async def _setup(self, create_client):
         self.mock_service = AsyncMock()
-        app.dependency_overrides[create_user_service] = lambda: self.mock_service
+        app.dependency_overrides[get_user_service] = lambda: self.mock_service
         self.client = create_client
 
     async def test_find_all(self):
@@ -43,20 +44,20 @@ class TestUserRouter:
     async def test_create(self):
         self.mock_service.create.return_value = User(id=1, **_REQ_EXAMPLE)
 
-        req = UserCreate(**_REQ_EXAMPLE)
+        req = UserRequest(**_REQ_EXAMPLE)
         res = await self.client.post('/users', json=req.model_dump())
 
         assert res.status_code == 201
         assert res.json().get('id') == 1
 
     async def test_update(self):
-        req = UserCreate(**_REQ_EXAMPLE)
+        req = UserRequest(**_REQ_EXAMPLE)
         res = await self.client.put('/users/1', json=req.model_dump())
 
         assert res.status_code == 204
 
     async def test_patch(self):
-        req = UserPatch(**_REQ_EXAMPLE)
+        req = UserPatchRequest(**_REQ_EXAMPLE)
         res = await self.client.patch('/users/1', json=req.model_dump())
 
         assert res.status_code == 204

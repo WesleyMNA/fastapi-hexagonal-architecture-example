@@ -1,1 +1,1 @@
-from .user_orm_mapper import UserOrmMapper
+from .user_orm_mapper import UserOrmMapperDep

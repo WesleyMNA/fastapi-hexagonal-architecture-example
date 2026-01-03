@@ -1,1 +1,1 @@
-from .user_validator import UserValidatorImpl
+from .user_validator import UserValidator

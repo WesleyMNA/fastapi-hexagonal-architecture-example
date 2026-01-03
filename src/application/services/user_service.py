@@ -2,16 +2,16 @@ from typing import List
 
 from src.application.exceptions import NotFound, Conflict
 from src.domain import User
-from src.ports.inbound import UserValidator
-from src.ports.outbound import UserRepository
+from src.ports.inbound import UserValidatorProtocol
+from src.ports.outbound import UserRepositoryProtocol
 
 _EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists'
 _NOT_FOUND_MESSAGE = 'User not found'
 
 
-class UserServiceImpl:
+class UserService:
 
-    def __init__(self, repository: UserRepository, validator: UserValidator):
+    def __init__(self, repository: UserRepositoryProtocol, validator: UserValidatorProtocol):
         self.repository = repository
         self.validator = validator
 

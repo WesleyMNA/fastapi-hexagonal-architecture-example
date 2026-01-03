@@ -1,1 +1,1 @@
-from .user_dtos import UserCreate, UserPatch, UserResponse
+from .user_dtos import UserRequest, UserPatchRequest, UserResponse

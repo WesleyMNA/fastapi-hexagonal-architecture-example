@@ -1,12 +1,12 @@
 from pydantic import BaseModel
 
 
-class UserCreate(BaseModel):
+class UserRequest(BaseModel):
     name: str
     email: str
 
 
-class UserPatch(BaseModel):
+class UserPatchRequest(BaseModel):
     name: str | None = None
     email: str | None = None
 

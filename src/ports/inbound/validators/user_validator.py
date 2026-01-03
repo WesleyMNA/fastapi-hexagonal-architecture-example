@@ -1,7 +1,7 @@
 from typing import Protocol
 
 
-class UserValidator(Protocol):
+class UserValidatorProtocol(Protocol):
 
     async def exists_by_id(self, user_id: int) -> bool:
         pass

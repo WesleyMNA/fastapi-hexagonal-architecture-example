@@ -1,46 +1,46 @@
 import pytest
 from pydantic import ValidationError
 
-from src.adapters.inbound.dtos import UserCreate, UserPatch, UserResponse
+from src.adapters.inbound.dtos import UserRequest, UserPatchRequest, UserResponse
 
 
 class TestUserCreate:
     def test_user_create_valid(self):
-        user = UserCreate(name='John Doe', email='john@example.com')
+        user = UserRequest(name='John Doe', email='john@example.com')
 
         assert user.name == 'John Doe'
         assert user.email == 'john@example.com'
 
     def test_user_create_missing_name(self):
         with pytest.raises(ValidationError):
-            UserCreate(email='john@example.com')
+            UserRequest(email='john@example.com')
 
     def test_user_create_missing_email(self):
         with pytest.raises(ValidationError):
-            UserCreate(name='John Doe')
+            UserRequest(name='John Doe')
 
 
 class TestUserPatch:
     def test_user_patch_empty(self):
-        user = UserPatch()
+        user = UserPatchRequest()
 
         assert user.name is None
         assert user.email is None
 
     def test_user_patch_partial_update_name(self):
-        user = UserPatch(name='Jane')
+        user = UserPatchRequest(name='Jane')
 
         assert user.name == 'Jane'
         assert user.email is None
 
     def test_user_patch_partial_update_email(self):
-        user = UserPatch(email='jane@example.com')
+        user = UserPatchRequest(email='jane@example.com')
 
         assert user.name is None
         assert user.email == 'jane@example.com'
 
     def test_user_patch_full_update(self):
-        user = UserPatch(name='Jane', email='jane@example.com')
+        user = UserPatchRequest(name='Jane', email='jane@example.com')
 
         assert user.name == 'Jane'
         assert user.email == 'jane@example.com'

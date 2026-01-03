@@ -1,13 +1,11 @@
 from dataclasses import asdict
 from typing import List
 
-from fastapi import Depends
 from sqlalchemy import select, delete, exists
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.adapters.outbound.config import create_db
-from src.adapters.outbound.mappers import UserOrmMapper
+from src.adapters.outbound.config import AsyncSessionDep
+from src.adapters.outbound.mappers import UserOrmMapperDep
 from src.adapters.outbound.orms import UserOrm
 from src.domain import User
 
@@ -15,8 +13,8 @@ from src.domain import User
 class UserSqlAlchemyRepository:
 
     def __init__(self,
-                 db: AsyncSession = Depends(create_db),
-                 mapper: UserOrmMapper = Depends()):
+                 db: AsyncSessionDep,
+                 mapper: UserOrmMapperDep):
         self.db = db
         self.mapper = mapper
 

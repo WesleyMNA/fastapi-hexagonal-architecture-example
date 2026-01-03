@@ -3,7 +3,7 @@ from typing import List, Protocol
 from src.domain import User
 
 
-class UserService(Protocol):
+class UserServiceProtocol(Protocol):
 
     async def find_all(self) -> List[User]:
         pass
