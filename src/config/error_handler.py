@@ -1,6 +1,6 @@
 from datetime import datetime
-from urllib.request import Request
 
+from fastapi import Request
 from starlette.responses import JSONResponse
 
 from src.application import ApplicationException, NotFound, Conflict
