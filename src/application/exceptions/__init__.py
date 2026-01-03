@@ -1,1 +1,1 @@
-from .rest import RestException, NotFound, Conflict
+from .application_exception import ApplicationException, NotFound, Conflict

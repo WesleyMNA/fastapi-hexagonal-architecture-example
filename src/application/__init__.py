@@ -1,3 +1,3 @@
-from .exceptions import RestException
+from .exceptions import *
 from .services import *
 from .validators import *
