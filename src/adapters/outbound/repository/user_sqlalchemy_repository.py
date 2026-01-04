@@ -1,8 +1,6 @@
-from dataclasses import asdict
 from typing import List
 
-from sqlalchemy import select, delete, exists
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import select, delete, exists, update
 
 from src.adapters.outbound.config import AsyncSessionDep
 from src.adapters.outbound.mappers import UserOrmMapperDep
@@ -36,10 +34,9 @@ class UserSqlAlchemyRepository:
         return await self.mapper.to_domain(result)
 
     async def update(self, updated_user: User) -> None:
-        user_as_dict = asdict(updated_user)
-        stmt = (insert(UserOrm)
-                .values(**user_as_dict)
-                .on_conflict_do_update(index_elements=[UserOrm.id], set_=user_as_dict))
+        stmt = (update(UserOrm)
+                .where(UserOrm.id == updated_user.id)
+                .values(name=updated_user.name, email=updated_user.email))
         await self.db.execute(stmt)
         await self.db.commit()
 
