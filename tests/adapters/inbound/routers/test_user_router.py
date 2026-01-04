@@ -17,10 +17,10 @@ _REQ_EXAMPLE = {
 class TestUserRouter:
 
     @pytest.fixture(autouse=True)
-    async def _setup(self, create_client):
+    async def _setup(self, get_client):
         self.mock_service = AsyncMock()
         app.dependency_overrides[get_user_service] = lambda: self.mock_service
-        self.client = create_client
+        self.client = get_client
 
     async def test_find_all(self):
         self.mock_service.find_all.return_value = [
