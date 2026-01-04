@@ -20,6 +20,9 @@ class UserRepositoryProtocol(Protocol):
     async def delete_by_id(self, user_id: int) -> None:
         pass
 
+    async def delete_all(self):
+        pass
+
     async def exists_by_id(self, user_id: int) -> bool:
         pass
 

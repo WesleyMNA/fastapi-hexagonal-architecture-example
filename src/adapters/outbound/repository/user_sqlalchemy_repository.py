@@ -45,6 +45,10 @@ class UserSqlAlchemyRepository:
         await self.db.execute(stmt)
         await self.db.commit()
 
+    async def delete_all(self):
+        await self.db.execute(delete(UserOrm))
+        await self.db.commit()
+
     async def exists_by_id(self, user_id: int) -> bool:
         stmt = select(exists(UserOrm).where(UserOrm.id == user_id))
         query = await self.db.execute(stmt)
