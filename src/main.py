@@ -15,6 +15,19 @@ async def lifespan(app: FastAPI):
     await db_dispose()
 
 
-app = FastAPI(lifespan=lifespan)
-app.include_router(main_router)
-app.add_exception_handler(ApplicationException, handle_application_exception)
+def _create_app() -> FastAPI:
+    result = FastAPI(
+        title='FastAPI Hexagonal Architecture Example',
+        version='1.0.0',
+        lifespan=lifespan,
+    )
+    result.include_router(main_router)
+    result.add_exception_handler(
+        ApplicationException,
+        handle_application_exception,
+    )
+
+    return result
+
+
+app = _create_app()
