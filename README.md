@@ -9,9 +9,9 @@ The project uses Hexagonal Architecture, separating:
 
 - **Adapters:** External implementations (HTTP, database, etc.);
 - **Application:** Services, validators and application exceptions;
-- **Config:** Framework related configurations (error handling, dependency injection, etc.)
+- **Config:** Framework-related configurations (error handling, dependency injection, etc.)
 - **Domain:** Core business rules and entities;
-- **Ports:** Inbound and Outbound protocols.
+- **Ports:** Inbound and outbound protocols that define application boundaries.
 
 This approach keeps the business logic independent of frameworks and external services.
 
@@ -29,13 +29,13 @@ This approach keeps the business logic independent of frameworks and external se
 
 ### Via IDE
 
-1. Run the command bellow to install the project dependencies:
+1. Run the command below to install the project dependencies:
 
    ```bash
    poetry install --no-root
    ```
 
-2. Start a PostgreSQL (run the command bellow to start it in Docker);
+2. Start a PostgreSQL (run the command below to start it in Docker);
 
     ```bash
     docker compose up -d postgres
@@ -54,13 +54,16 @@ This approach keeps the business logic independent of frameworks and external se
    
    *Obs.: the default values correspond to the `compose.yaml` configuration*
 
-4. Start the application with your favorite IDE or run command bellow via terminal:
+4. Start the application with your favorite IDE or run command below via terminal:
    
    ```bash
    fastapi dev src/main.py
    ```
 
 ## Testing
+
+This project uses **Testcontainers** to spin up real infrastructure dependencies (PostgreSQL)
+during integration tests, ensuring production-like behavior.
 
 Before running the API tests with `pytest`, be sure to have `Docker` running. Then run the command:
 
