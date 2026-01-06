@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+import uvicorn
 from fastapi import FastAPI
 
 from src.adapters.inbound import main_router
@@ -31,3 +32,11 @@ def _create_app() -> FastAPI:
 
 
 app = _create_app()
+
+if __name__ == '__main__':
+    uvicorn.run(
+        'main:app',
+        host='0.0.0.0',
+        port=8000,
+        reload=False,
+    )
