@@ -3,7 +3,7 @@ from typing import List
 from src.application.exceptions import NotFound, Conflict
 from src.domain import User
 from src.ports.inbound import UserValidatorProtocol
-from src.ports.outbound import UserRepositoryProtocol
+from src.ports.outbound import UserRepositoryProtocol, EmailCryptoProtocol
 
 _EMAIL_ALREADY_EXISTS_MESSAGE = 'Email already exists'
 _NOT_FOUND_MESSAGE = 'User not found'
@@ -11,9 +11,15 @@ _NOT_FOUND_MESSAGE = 'User not found'
 
 class UserService:
 
-    def __init__(self, repository: UserRepositoryProtocol, validator: UserValidatorProtocol):
+    def __init__(
+            self,
+            repository: UserRepositoryProtocol,
+            validator: UserValidatorProtocol,
+            crypto: EmailCryptoProtocol
+    ):
         self.repository = repository
         self.validator = validator
+        self.crypto = crypto
 
     async def find_all(self) -> List[User]:
         return await self.repository.find_all()
@@ -25,20 +31,23 @@ class UserService:
         return result
 
     async def create(self, user: User) -> User:
-        email_exists = await self.validator.exists_by_email(user.email)
+        user.email_hash = self.crypto.hash(user.email)
+        email_exists = await self.validator.exists_by_email(user.email_hash)
         if email_exists:
             raise Conflict(_EMAIL_ALREADY_EXISTS_MESSAGE)
+        user.email_encrypted = self.crypto.encrypt(user.email)
         return await self.repository.save(user)
 
     async def update(self, user_id: int, updated_user: User) -> None:
         user = await self.find_by_id(user_id)
         await self.validate_email(user_id, updated_user.email)
         user.name = updated_user.name
-        user.email = updated_user.email
+        user.email_hash = self.crypto.hash(user.email)
+        user.email_encrypted = self.crypto.encrypt(user.email)
         await self.repository.update(user)
 
     async def validate_email(self, user_id: int, email: str) -> None:
-        exists = await self.validator.exists_by_id_not_and_email(user_id, email)
+        exists = await self.validator.exists_by_id_not_and_email(user_id, self.crypto.hash(email))
         if exists:
             raise Conflict(_EMAIL_ALREADY_EXISTS_MESSAGE)
 
@@ -48,7 +57,8 @@ class UserService:
             user.name = updated_user.name
         if updated_user.email is not None:
             await self.validate_email(user_id, updated_user.email)
-            user.email = updated_user.email
+            user.email_hash = self.crypto.hash(user.email)
+            user.email_encrypted = self.crypto.encrypt(user.email)
         await self.repository.update(user)
 
     async def delete(self, user_id: int) -> None:

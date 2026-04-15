@@ -55,11 +55,11 @@ class UserSqlAlchemyRepository:
         return query.scalar()
 
     async def exists_by_email(self, email: str) -> bool:
-        stmt = select(exists(UserOrm).where(UserOrm.email == email))
+        stmt = select(exists(UserOrm).where(UserOrm.email_hash == email))
         query = await self.db.execute(stmt)
         return query.scalar()
 
     async def exists_by_id_not_and_email(self, user_id: int, email: str) -> bool:
-        stmt = select(exists(UserOrm).where(UserOrm.id != user_id, UserOrm.email == email))
+        stmt = select(exists(UserOrm).where(UserOrm.id != user_id, UserOrm.email_hash == email))
         query = await self.db.execute(stmt)
         return query.scalar()

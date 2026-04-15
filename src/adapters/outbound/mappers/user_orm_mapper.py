@@ -13,12 +13,16 @@ class UserOrmMapper:
         return User(
             id=u.id,
             name=u.name,
-            email=u.email,
         )
 
     @staticmethod
     async def to_orm(u: User) -> UserOrm:
-        return UserOrm(**asdict(u))
+        return UserOrm(
+            id=u.id,
+            name=u.name,
+            email_encrypted=u.email_encrypted,
+            email_hash=u.email_hash,
+        )
 
 
 UserOrmMapperDep = Annotated[UserOrmMapper, Depends(UserOrmMapper)]
