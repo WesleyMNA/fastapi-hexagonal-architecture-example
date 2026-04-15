@@ -36,7 +36,9 @@ class UserSqlAlchemyRepository:
     async def update(self, updated_user: User) -> None:
         stmt = (update(UserOrm)
                 .where(UserOrm.id == updated_user.id)
-                .values(name=updated_user.name, email=updated_user.email))
+                .values(name=updated_user.name,
+                        email_hash=updated_user.email_hash,
+                        email_encrypted=updated_user.email_encrypted))
         await self.db.execute(stmt)
         await self.db.commit()
 

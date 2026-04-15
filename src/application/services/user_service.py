@@ -42,8 +42,8 @@ class UserService:
         user = await self.find_by_id(user_id)
         await self.validate_email(user_id, updated_user.email)
         user.name = updated_user.name
-        user.email_hash = self.crypto.hash(user.email)
-        user.email_encrypted = self.crypto.encrypt(user.email)
+        user.email_hash = self.crypto.hash(updated_user.email)
+        user.email_encrypted = self.crypto.encrypt(updated_user.email)
         await self.repository.update(user)
 
     async def validate_email(self, user_id: int, email: str) -> None:
@@ -57,8 +57,8 @@ class UserService:
             user.name = updated_user.name
         if updated_user.email is not None:
             await self.validate_email(user_id, updated_user.email)
-            user.email_hash = self.crypto.hash(user.email)
-            user.email_encrypted = self.crypto.encrypt(user.email)
+            user.email_hash = self.crypto.hash(updated_user.email)
+            user.email_encrypted = self.crypto.encrypt(updated_user.email)
         await self.repository.update(user)
 
     async def delete(self, user_id: int) -> None:
