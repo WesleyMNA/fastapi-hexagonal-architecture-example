@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from typing import Annotated
 
 from fastapi import Depends
@@ -13,6 +12,8 @@ class UserOrmMapper:
         return User(
             id=u.id,
             name=u.name,
+            email_encrypted=u.email_encrypted,
+            email_hash=u.email_hash,
         )
 
     @staticmethod

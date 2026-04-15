@@ -34,7 +34,12 @@ class TestUserSqlAlchemyRepository:
         return result
 
     def _create_faker_user(self) -> User:
-        return User(name=self.faker.name(), email=self.faker.email())
+        return User(
+            name=self.faker.name(),
+            email=self.faker.email(),
+            email_hash=self.faker.uuid4(),
+            email_encrypted=self.faker.uuid4(),
+        )
 
     async def test_find_by_id_should_return_user_when_id_exists(self):
         saved_user = await self.repository.save(self._create_faker_user())
@@ -44,7 +49,8 @@ class TestUserSqlAlchemyRepository:
         assert result_user is not None
         assert result_user.id == saved_user.id
         assert result_user.name == saved_user.name
-        assert result_user.email == saved_user.email
+        assert result_user.email_hash == saved_user.email_hash
+        assert result_user.email_encrypted == saved_user.email_encrypted
 
     async def test_find_by_id_should_return_none_when_id_does_not_exist(self):
         user = await self.repository.find_by_id(1)
@@ -58,7 +64,8 @@ class TestUserSqlAlchemyRepository:
 
         assert saved_user is not None
         assert saved_user.name == user.name
-        assert saved_user.email == user.email
+        assert saved_user.email_hash == user.email_hash
+        assert saved_user.email_encrypted == user.email_encrypted
 
     async def test_update(self):
         saved_user = await self.repository.save(self._create_faker_user())
@@ -70,7 +77,8 @@ class TestUserSqlAlchemyRepository:
 
         assert result_user is not None
         assert result_user.name == updated_user.name
-        assert result_user.email == updated_user.email
+        assert result_user.email_hash == updated_user.email_hash
+        assert result_user.email_encrypted == updated_user.email_encrypted
 
     async def test_delete_by_id(self):
         saved_user = await self.repository.save(self._create_faker_user())
@@ -103,7 +111,7 @@ class TestUserSqlAlchemyRepository:
     async def test_exists_by_email_should_return_true_when_email_exists(self):
         saved_user = await self.repository.save(self._create_faker_user())
 
-        user_exists = await self.repository.exists_by_email(saved_user.email)
+        user_exists = await self.repository.exists_by_email(saved_user.email_hash)
 
         assert user_exists
 
@@ -115,7 +123,7 @@ class TestUserSqlAlchemyRepository:
     async def test_exists_by_id_not_and_email_should_return_true_when_email_exists_with_different_id(self):
         saved_user = await self.repository.save(self._create_faker_user())
 
-        user_exists = await self.repository.exists_by_id_not_and_email(saved_user.id + 1, saved_user.email)
+        user_exists = await self.repository.exists_by_id_not_and_email(saved_user.id + 1, saved_user.email_hash)
 
         assert user_exists
 

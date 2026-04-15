@@ -21,13 +21,15 @@ class TestUserOrmMapper:
         assert isinstance(orm_user, UserOrm)
         assert orm_user.id == domain_user.id
         assert orm_user.name == domain_user.name
-        assert orm_user.email == domain_user.email
+        assert orm_user.email_hash == domain_user.email_hash
+        assert orm_user.email_encrypted == domain_user.email_encrypted
 
     def _create_base_user_data(self) -> dict:
         return {
             'id': self.faker.random_digit(),
             'name': self.faker.name(),
-            'email': self.faker.email(),
+            'email_hash': self.faker.uuid4(),
+            'email_encrypted': self.faker.uuid4(),
         }
 
     async def test_to_domain(self):
@@ -38,4 +40,5 @@ class TestUserOrmMapper:
         assert isinstance(domain_user, User)
         assert domain_user.id == orm_user.id
         assert domain_user.name == orm_user.name
-        assert domain_user.email == orm_user.email
+        assert domain_user.email_hash == orm_user.email_hash
+        assert domain_user.email_encrypted == orm_user.email_encrypted

@@ -48,12 +48,11 @@ class TestUserPatch:
 
 class TestUserResponse:
     def test_user_response_valid(self):
-        user = UserResponse(id=1, name='John Doe', email='john@example.com')
+        user = UserResponse(id=1, name='John Doe')
 
         assert user.id == 1
         assert user.name == 'John Doe'
-        assert user.email == 'john@example.com'
 
     def test_user_response_invalid_id(self):
         with pytest.raises(ValidationError):
-            UserResponse(id='one', name='John Doe', email='john@example.com')
+            UserResponse(id='one', name='John Doe')
