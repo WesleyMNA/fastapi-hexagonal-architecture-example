@@ -3,10 +3,10 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
-from src.adapters.inbound import main_router
-from src.adapters.outbound import init_db, db_dispose
-from src.application import ApplicationException
-from src.config import handle_application_exception
+from src.domain.shared import ApplicationException
+from src.infrastructure.web.config import handle_application_exception
+from src.infrastructure.persistence import init_db, db_dispose
+from src.infrastructure.web import main_router
 
 
 @asynccontextmanager
